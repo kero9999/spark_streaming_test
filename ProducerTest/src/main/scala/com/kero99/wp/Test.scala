@@ -18,17 +18,24 @@ object Test extends App {
   timer.schedule(new java.util.TimerTask {
     var index=1;
     override def run(): Unit = {
-      val line = new java.lang.StringBuilder
-      for(i <- 0 until random.nextInt(100)){
-        val index = random.nextInt(words.length)
-        line.append(words(index)).append(" ")
+      if(index<201){
+        val id = index.toString
+        index+=1
+        val msg = words.mkString(" ")
+        WpProducer.sendmessage("wp",id,msg)
       }
-      var id=(index).toString;
-      index+=1
-      println(s"生产:id:${id},value:${line}")
-      WpProducer.sendmessage("wp",id,line.toString)
+
+
+//      val line = new java.lang.StringBuilder
+//      for(i <- 0 until random.nextInt(100)){
+//        val index = random.nextInt(words.length)
+//        line.append(words(index)).append(" ")
+//      }
+//      var id=(index+=1).toString;
+//      println(s"生产:id:${id},value:${line}")
+//      WpProducer.sendmessage("wp",id,line.toString)
     }
-  },0,100)
+  },0,1000)
 }
 object WpProducer {
   def sendmessage(topic:String,key:String,msg:String): Unit = {
